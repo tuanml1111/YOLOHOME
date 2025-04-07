@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './components/Login/Login';
 import Dashboard from './components/Dashboard/Dashboard';
 import DeviceControl from './components/DeviceControl/DeviceControl';
+import Alerts from './components/Alerts/Alerts';
+import AlertConfig from './components/Alerts/AlertConfig';
 import Header from './components/common/Header';
 import Sidebar from './components/common/Sidebar';
 import Footer from './components/common/Footer';
@@ -48,6 +50,8 @@ function App() {
                       <Route path="/" element={<Navigate to="/dashboard" />} />
                       <Route path="/dashboard" element={<Dashboard />} />
                       <Route path="/devices" element={<DeviceControl />} />
+                      <Route path="/alerts" element={<Alerts />} />
+                      <Route path="/alert-config" element={<AlertConfig />} />
                     </Routes>
                   </main>
                 </div>

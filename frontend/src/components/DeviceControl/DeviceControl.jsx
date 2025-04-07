@@ -6,7 +6,6 @@ const DeviceControl = () => {
   const [devices, setDevices] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filter, setFilter] = useState('all');
   
   useEffect(() => {
     loadDevices();
@@ -55,16 +54,6 @@ const DeviceControl = () => {
     }
   };
   
-  const formatTime = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
-  
-  // Filter devices based on selected type
-  const filteredDevices = filter === 'all' 
-    ? devices 
-    : devices.filter(device => device.type === filter);
-  
   const deviceTypeIcons = {
     light: 'fas fa-lightbulb',
     fan: 'fas fa-fan',
@@ -80,39 +69,13 @@ const DeviceControl = () => {
     <div className="device-control">
       <div className="page-header">
         <h1>Device Control</h1>
-        <div className="filter-buttons">
-          <button 
-            className={filter === 'all' ? 'filter-btn active' : 'filter-btn'}
-            onClick={() => setFilter('all')}
-          >
-            All
-          </button>
-          <button 
-            className={filter === 'light' ? 'filter-btn active' : 'filter-btn'}
-            onClick={() => setFilter('light')}
-          >
-            Lights
-          </button>
-          <button 
-            className={filter === 'fan' ? 'filter-btn active' : 'filter-btn'}
-            onClick={() => setFilter('fan')}
-          >
-            Fans
-          </button>
-          <button 
-            className={filter === 'lock' ? 'filter-btn active' : 'filter-btn'}
-            onClick={() => setFilter('lock')}
-          >
-            Locks
-          </button>
-        </div>
       </div>
       
       {error && <div className="error-message">{error}</div>}
       
       <div className="device-grid">
-        {filteredDevices.length > 0 ? (
-          filteredDevices.map(device => (
+        {devices.length > 0 ? (
+          devices.map(device => (
             <div key={device.id} className="device-card">
               <div className="device-header">
                 <div className="device-icon">
@@ -128,7 +91,6 @@ const DeviceControl = () => {
               </div>
               
               <div className="device-control-panel">
-                <p className="device-updated">Last updated: {formatTime(device.lastUpdated)}</p>
                 <label className="toggle-switch">
                   <input
                     type="checkbox"
@@ -141,7 +103,7 @@ const DeviceControl = () => {
             </div>
           ))
         ) : (
-          <div className="no-devices">No devices found matching your filter criteria.</div>
+          <div className="no-devices">No devices found.</div>
         )}
       </div>
     </div>

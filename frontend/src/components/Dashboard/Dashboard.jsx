@@ -55,18 +55,6 @@ const Dashboard = () => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
   
-  const handleQuickAction = async (deviceType) => {
-    try {
-      await DeviceController.toggleDeviceByType(deviceType);
-      
-      // Refresh device statistics
-      const deviceResult = await DeviceController.getDeviceStats();
-      setDeviceStats(deviceResult);
-    } catch (error) {
-      console.error(`Error toggling ${deviceType}:`, error);
-    }
-  };
-  
   if (isLoading) {
     return <div className="loading-indicator">Loading dashboard data...</div>;
   }
@@ -160,41 +148,6 @@ const Dashboard = () => {
           )}
           <div className="card-footer">
             <a href="/alerts" className="view-all">View All Alerts</a>
-          </div>
-        </div>
-        
-        {/* Quick Actions */}
-        <div className="card">
-          <h2>Quick Actions</h2>
-          <div className="quick-actions">
-            <button 
-              className="action-button" 
-              onClick={() => handleQuickAction('light')}
-            >
-              <i className="fas fa-lightbulb"></i>
-              <span>Toggle Lights</span>
-            </button>
-            <button 
-              className="action-button"
-              onClick={() => handleQuickAction('fan')}
-            >
-              <i className="fas fa-fan"></i>
-              <span>Toggle Fan</span>
-            </button>
-            <button 
-              className="action-button"
-              onClick={() => handleQuickAction('lock')}
-            >
-              <i className="fas fa-lock"></i>
-              <span>Lock Door</span>
-            </button>
-            <button 
-              className="action-button"
-              onClick={() => handleQuickAction('alarm')}
-            >
-              <i className="fas fa-bell-slash"></i>
-              <span>Silence Alerts</span>
-            </button>
           </div>
         </div>
       </div>

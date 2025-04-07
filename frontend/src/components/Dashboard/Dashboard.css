@@ -207,41 +207,6 @@
     text-decoration: underline;
   }
   
-  /* Quick Actions */
-  .quick-actions {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-  
-  .action-button {
-    background-color: #f5f7fb;
-    border: none;
-    border-radius: 6px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .action-button:hover {
-    background-color: #ebeef5;
-  }
-  
-  .action-button i {
-    font-size: 24px;
-    margin-bottom: 10px;
-    color: #3498db;
-  }
-  
-  .action-button span {
-    font-size: 14px;
-    font-weight: 500;
-  }
-  
   /* Loading Indicator */
   .loading-indicator {
     display: flex;
@@ -249,5 +214,5 @@
     align-items: center;
     height: 200px;
     color: #7f8c8d;
-    font-size: 16px;
+    font-size: 18px;
   }

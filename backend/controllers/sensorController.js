@@ -212,29 +212,49 @@ exports.addSensorData = async (req, res, next) => {
 // @access  Private
 exports.getAllLatestReadings = async (req, res, next) => {
   try {
+    console.log('Getting all latest sensor readings');
+    
     // Get all sensors
     const sensors = await SensorModel.getAllSensors();
+    console.log('Found sensors:', sensors.length);
     
     // Get latest reading for each sensor
     const readings = {};
     
     for (const sensor of sensors) {
+      console.log(`Getting latest data for sensor ${sensor.sensor_id} (${sensor.sensor_type})`);
       const data = await SensorModel.getLatestSensorData(sensor.sensor_id);
       
       if (data) {
+        console.log(`Found data for ${sensor.sensor_type}:`, data);
+        // Chuyển đổi string -> number cho giá trị
+        const value = parseFloat(data.svalue);
+        
         readings[sensor.sensor_type] = {
-          value: data.svalue,
+          value: value,
           unit: sensor.unit,
           timestamp: data.recorded_time
         };
+      } else {
+        console.log(`No data found for sensor ${sensor.sensor_id}`);
       }
     }
     
+    // Đảm bảo dữ liệu trả về có định dạng dễ sử dụng cho frontend
+    const responseData = {
+      temperature: readings.temperature ? readings.temperature.value : 0,
+      humidity: readings.humidity ? readings.humidity.value : 0,
+      motion: readings.motion ? readings.motion.value > 0 : false
+    };
+    
+    console.log('Final response data:', responseData);
+    
     res.status(200).json({
       success: true,
-      data: readings
+      data: responseData
     });
   } catch (error) {
+    console.error('Error getting sensor readings:', error);
     next(error);
   }
 };

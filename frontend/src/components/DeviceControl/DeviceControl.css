@@ -4,40 +4,14 @@
   
   .page-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     margin-bottom: 30px;
-    flex-wrap: wrap;
   }
   
   .page-header h1 {
     margin: 0;
     color: #2c3e50;
-  }
-  
-  .filter-buttons {
-    display: flex;
-    gap: 8px;
-  }
-  
-  .filter-btn {
-    padding: 8px 15px;
-    background-color: #f5f7fb;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.3s;
-  }
-  
-  .filter-btn:hover {
-    background-color: #ebeef5;
-  }
-  
-  .filter-btn.active {
-    background-color: #3498db;
-    color: white;
   }
   
   .error-message {
@@ -124,16 +98,10 @@
   .device-control-panel {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-top: 10px;
     padding-top: 15px;
     border-top: 1px solid #ecf0f1;
-  }
-  
-  .device-updated {
-    margin: 0;
-    color: #7f8c8d;
-    font-size: 12px;
   }
   
   /* Toggle Switch */

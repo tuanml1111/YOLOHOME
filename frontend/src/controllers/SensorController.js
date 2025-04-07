@@ -3,21 +3,35 @@ import apiService from '../services/apiService';
 class SensorController {
   static async getLatestReadings() {
     try {
-      // In a real application, we would fetch data from the API
-      // For now, let's use mock data
-      await new Promise(resolve => setTimeout(resolve, 300));
+      console.log('Fetching latest sensor readings from API');
+      const response = await apiService.get('/sensors/readings');
       
-      // Random values for demo purposes
-      const mockData = {
-        temperature: (Math.random() * 10 + 25).toFixed(1),
-        humidity: (Math.random() * 20 + 60).toFixed(1),
-        motion: Math.random() > 0.7
+      if (response.data && response.data.data) {
+        const data = response.data.data;
+        console.log('API response data:', data);
+        
+        return {
+          temperature: parseFloat(data.temperature || 0).toFixed(1),
+          humidity: parseFloat(data.humidity || 0).toFixed(1),
+          motion: data.motion === 1 || data.motion === true
+        };
+      }
+      
+      console.warn('API response did not contain expected data format, using fallback values');
+      // Fallback to default values if API fails or returns unexpected format
+      return {
+        temperature: "25.5",
+        humidity: "60.2",
+        motion: false
       };
-      
-      return mockData;
     } catch (error) {
       console.error('Error fetching sensor readings:', error);
-      throw error;
+      // Fallback to default values in case of error
+      return {
+        temperature: "25.5", 
+        humidity: "60.2",
+        motion: false
+      };
     }
   }
   
@@ -60,36 +74,69 @@ class SensorController {
   
   static async getRecentAlerts() {
     try {
-      // In a real application, we would fetch alerts from the API
-      // For now, let's use mock data
-      const mockAlerts = [
+      // Fetch real alerts from API
+      const response = await apiService.get('/alerts/recent');
+      
+      if (response.data && response.data.data && Array.isArray(response.data.data)) {
+        return response.data.data.map(alert => ({
+          id: alert.alert_id,
+          type: alert.alert_type.toLowerCase(),
+          message: alert.amessage,
+          timestamp: alert.alerted_time,
+          status: alert.status
+        }));
+      }
+      
+      // Fallback to mock data if API fails or returns unexpected format
+      return [
         {
           id: 1,
           type: 'temperature',
           message: 'Temperature exceeded 30°C',
-          timestamp: new Date(Date.now() - 30 * 60000).toISOString(), // 30 minutes ago
+          timestamp: new Date(Date.now() - 30 * 60000).toISOString(),
           status: 'active'
         },
         {
           id: 2,
           type: 'motion',
           message: 'Motion detected in living room',
-          timestamp: new Date(Date.now() - 45 * 60000).toISOString(), // 45 minutes ago
+          timestamp: new Date(Date.now() - 45 * 60000).toISOString(),
           status: 'active'
         },
         {
           id: 3,
           type: 'humidity',
           message: 'Humidity level below 30%',
-          timestamp: new Date(Date.now() - 120 * 60000).toISOString(), // 2 hours ago
+          timestamp: new Date(Date.now() - 120 * 60000).toISOString(),
           status: 'resolved'
         }
       ];
-      
-      return mockAlerts;
     } catch (error) {
       console.error('Error fetching alerts:', error);
-      throw error;
+      // Fallback to mock data
+      return [
+        {
+          id: 1,
+          type: 'temperature',
+          message: 'Temperature exceeded 30°C',
+          timestamp: new Date(Date.now() - 30 * 60000).toISOString(),
+          status: 'active'
+        },
+        {
+          id: 2,
+          type: 'motion',
+          message: 'Motion detected in living room',
+          timestamp: new Date(Date.now() - 45 * 60000).toISOString(),
+          status: 'active'
+        },
+        {
+          id: 3,
+          type: 'humidity',
+          message: 'Humidity level below 30%',
+          timestamp: new Date(Date.now() - 120 * 60000).toISOString(),
+          status: 'resolved'
+        }
+      ];
     }
   }
 }

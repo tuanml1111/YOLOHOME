@@ -31,6 +31,12 @@ const Sidebar = () => {
             </NavLink>
           </li>
           <li className="nav-item">
+            <NavLink to="/alert-config" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+              <i className="fas fa-sliders-h"></i>
+              <span>Alert Config</span>
+            </NavLink>
+          </li>
+          <li className="nav-item">
             <NavLink to="/settings" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
               <i className="fas fa-cog"></i>
               <span>Settings</span>
